@@ -4,7 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { LoadingState } from '@/components/common/LoadingState';
 
 export const ProtectedRoute: React.FC = () => {
-  const { session, loading, isConfigured } = useAuth();
+  const { session, loading } = useAuth();
 
   if (loading) {
     return (
@@ -14,11 +14,6 @@ export const ProtectedRoute: React.FC = () => {
         </div>
       </div>
     );
-  }
-
-  // Jika Supabase belum di-setup di .env, kita izinkan masuk dalam demo preview mode
-  if (!isConfigured) {
-    return <Outlet />;
   }
 
   if (!session) {

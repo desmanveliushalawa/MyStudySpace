@@ -42,6 +42,11 @@ export const Header: React.FC<HeaderProps> = ({
   const displayName = profile?.full_name || user?.email?.split('@')[0] || 'Desman';
   const initial = displayName.charAt(0).toUpperCase();
 
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/login', { replace: true });
+  };
+
   const handleToggleTheme = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark');
   };
@@ -152,7 +157,7 @@ export const Header: React.FC<HeaderProps> = ({
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              onClick={signOut}
+              onClick={handleSignOut}
               className="gap-2 text-destructive focus:bg-destructive/10 focus:text-destructive"
             >
               <LogOut className="h-4 w-4" />

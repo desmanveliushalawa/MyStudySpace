@@ -1,5 +1,6 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 import {
   LayoutDashboard,
   BookOpen,
@@ -14,6 +15,7 @@ import {
   ChevronLeft,
   ChevronRight,
   BookMarked,
+  LogOut,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -29,6 +31,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onToggleCollapse,
   onCloseMobile,
 }) => {
+  const { signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    if (onCloseMobile) onCloseMobile();
+    await signOut();
+    navigate('/login', { replace: true });
+  };
   const navItems = [
     { label: 'Dashboard', path: '/', icon: LayoutDashboard },
     { label: 'Pelajaran', path: '/lessons', icon: BookOpen },
@@ -112,7 +122,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </nav>
 
       {/* Footer Info */}
-      <div className="p-3 border-t border-border/80">
+      <div className="p-3 border-t border-border/80 space-y-1.5">
         <div
           className={cn(
             'flex items-center rounded-lg bg-secondary/50 p-2 text-xs text-muted-foreground',
@@ -124,6 +134,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
           )}
           <span className="h-2 w-2 rounded-full bg-emerald-500 shrink-0" title="Online" />
         </div>
+
+        <button
+          onClick={handleLogout}
+          className={cn(
+            'flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-xs text-destructive hover:bg-destructive/10 transition-colors font-medium',
+            collapsed ? 'justify-center' : 'justify-start'
+          )}
+          title="Keluar dari akun"
+        >
+          <LogOut className="h-4 w-4 shrink-0" />
+          {!collapsed && <span>Keluar Akun</span>}
+        </button>
       </div>
     </aside>
   );
