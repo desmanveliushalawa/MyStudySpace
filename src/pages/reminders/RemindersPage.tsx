@@ -12,6 +12,7 @@ import { ConfirmDialog } from '@/components/common/ConfirmDialog';
 import { EmptyState } from '@/components/common/EmptyState';
 import {
   Bell,
+  BellRing,
   Plus,
   Calendar as CalendarIcon,
   CheckCircle2,
@@ -20,15 +21,19 @@ import {
   ExternalLink,
   AlertCircle,
   Clock,
+  Volume2,
+  ShieldCheck,
 } from 'lucide-react';
 import { NotificationType, NotificationLeadTime } from '@/types/database';
 import { formatDateID } from '@/lib/utils';
 import { toast } from 'sonner';
+import { useInAppNotifications } from '@/hooks/useInAppNotifications';
 
 export const RemindersPage: React.FC = () => {
   const { reminders, isLoading, createReminder, toggleReminderComplete, deleteReminder, retrySync } =
     useReminders();
   const { tasks } = useTasks();
+  const { permission, requestPermission, sendTestNotification } = useInAppNotifications();
 
   const [modalOpen, setModalOpen] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
@@ -170,6 +175,72 @@ export const RemindersPage: React.FC = () => {
                 <span>Hubungkan Google Calendar</span>
               </Button>
             )}
+          </div>
+        </div>
+      </Card>
+
+      {/* Browser Notification Status & Test Card */}
+      <Card className="border-border/80 p-5 shadow-elevation bg-card">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400">
+              <BellRing className="h-5 w-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h3 className="text-sm font-bold text-foreground">
+                  Notifikasi Browser & Bunyi Pengingat
+                </h3>
+                <Badge
+                  variant={
+                    permission === 'granted'
+                      ? 'success'
+                      : permission === 'denied'
+                      ? 'destructive'
+                      : 'outline'
+                  }
+                  className="text-[10px] px-2 py-0.5"
+                >
+                  {permission === 'granted'
+                    ? 'Izin Notifikasi Aktif'
+                    : permission === 'denied'
+                    ? 'Izin Diblokir di Browser'
+                    : 'Perlu Izin Notifikasi'}
+                </Badge>
+              </div>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                {permission === 'granted'
+                  ? 'Browser siap membunyikan chime dan menampilkan pop-up saat pengingat jatuh tempo.'
+                  : permission === 'denied'
+                  ? 'Izin diblokir browser. Klik ikon gembok pada URL bar untuk mengubah izin menjadi Izinkan.'
+                  : 'Aktifkan izin notifikasi browser agar pop-up alarm muncul di layar laptop atau HP Anda.'}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2">
+            {permission !== 'granted' && (
+              <Button
+                size="sm"
+                variant="default"
+                onClick={requestPermission}
+                className="text-xs gap-1.5 shadow-sm"
+              >
+                <ShieldCheck className="h-3.5 w-3.5" />
+                <span>Aktifkan Notifikasi Browser</span>
+              </Button>
+            )}
+
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={sendTestNotification}
+              className="text-xs gap-1.5"
+              title="Kirim notifikasi uji coba untuk mengetes suara dan pop-up"
+            >
+              <Volume2 className="h-3.5 w-3.5 text-primary" />
+              <span>Uji Coba Notifikasi</span>
+            </Button>
           </div>
         </div>
       </Card>

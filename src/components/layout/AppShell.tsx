@@ -4,11 +4,15 @@ import { Sidebar } from './Sidebar';
 import { Header } from './Header';
 import { MobileNav } from './MobileNav';
 import { GlobalSearchModal } from './GlobalSearchModal';
+import { useInAppNotifications } from '@/hooks/useInAppNotifications';
 
 export const AppShell: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+
+  // Active reminder & notification watcher across the whole app
+  useInAppNotifications();
 
   // Keyboard shortcut Ctrl+K / Cmd+K listener
   useEffect(() => {
