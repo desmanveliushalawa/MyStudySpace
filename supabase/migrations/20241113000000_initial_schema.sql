@@ -517,3 +517,4 @@ CREATE INDEX IF NOT EXISTS idx_reminders_user_time ON public.reminders(user_id, 
 CREATE INDEX IF NOT EXISTS idx_reminders_sync_status ON public.reminders(user_id, sync_status);
 
 CREATE INDEX IF NOT EXISTS idx_activity_log_user_time ON public.activity_log(user_id, created_at DESC);
+

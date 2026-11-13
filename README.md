@@ -199,3 +199,4 @@ Aplikasi dibangun sebagai Static Site SPA yang dapat di-deploy secara otomatis m
 
 - **Supabase Inactivity Pause**: Proyek Supabase pada tier gratis (*Free tier*) akan otomatis dijeda (*paused*) jika tidak ada traffic database selama sekitar 1 minggu.
 - **Pemulihan**: Jika aplikasi tidak bisa memuat data setelah lama tidak dibuka, cukup login ke [Supabase Dashboard](https://supabase.com/dashboard) dan klik **Restore Project**. Semua data, tabel, dan kredensial Anda tetap aman dan akan aktif kembali dalam hitungan detik.
+
